@@ -128,6 +128,114 @@ git commit -m "feat: add new feature"  # Runs automatically
 3. **Commit**: `git commit -m "feat: your message"`
 4. **Commit-msg hook**: Validates commit message format with commitlint
 
+## Docker Development Environment
+
+### Prerequisites
+
+- Docker and Docker Compose
+- Node.js and pnpm (for local development)
+
+### Quick Start
+
+#### Option 1: Full Docker Development (Recommended)
+
+1. **Start the complete development environment:**
+
+   ```bash
+   pnpm docker:dev
+   ```
+
+2. **Open the application:**
+   - Visit: http://localhost:3000
+   - Database: PostgreSQL on port 5432
+   - Redis: Available on port 6379
+
+#### Option 2: Database-Only Docker
+
+1. **Start only the database services:**
+
+   ```bash
+   pnpm docker:dev:postgres
+   pnpm docker:dev:redis
+   ```
+
+2. **Run database migrations:**
+
+   ```bash
+   pnpm db:migrate
+   ```
+
+3. **Start the Next.js development server locally:**
+
+   ```bash
+   pnpm dev
+   ```
+
+4. **Open the application:**
+   - Visit: http://localhost:3000
+   - Database: PostgreSQL on port 5432
+   - Redis: Available on port 6379
+
+### Available Scripts
+
+- `pnpm docker:dev` - Start complete development environment (PostgreSQL, Redis, and Next.js)
+- `pnpm docker:dev:app` - Start Next.js app container only
+- `pnpm docker:dev:postgres` - Start PostgreSQL container only
+- `pnpm docker:dev:redis` - Start Redis container only
+- `pnpm docker:dev:down` - Stop all containers
+- `pnpm db:migrate` - Run database migrations
+- `pnpm db:generate` - Generate Prisma client
+- `pnpm db:studio` - Open Prisma Studio
+
+### Development Notes
+
+- The full Docker environment includes hot reload for file changes
+- Database migrations are automatically run when the app container starts
+- All services include health checks for reliable startup
+
+### Individual Service Management
+
+You can now start services individually for more granular control:
+
+```bash
+# Start only PostgreSQL
+pnpm docker:dev:postgres
+
+# Start only Redis
+pnpm docker:dev:redis
+
+# Start only the Next.js app (requires postgres to be running)
+pnpm docker:dev:app
+
+# Start all services
+pnpm docker:dev
+
+# Stop all services
+pnpm docker:dev:down
+```
+
+**Common Development Patterns:**
+
+1. **Database development:** Start only postgres and work with Prisma Studio
+
+   ```bash
+   pnpm docker:dev:postgres
+   pnpm db:studio
+   ```
+
+2. **Cache development:** Start postgres and redis, run app locally
+
+   ```bash
+   pnpm docker:dev:postgres
+   pnpm docker:dev:redis
+   pnpm dev
+   ```
+
+3. **Full containerized development:** Everything in Docker
+   ```bash
+   pnpm docker:dev
+   ```
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

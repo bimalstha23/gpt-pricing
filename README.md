@@ -20,6 +20,45 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Code Quality & Formatting
+
+This project is configured with comprehensive code quality tools:
+
+### ESLint
+ESLint is configured with the following plugins and rules:
+- **Next.js** - Core web vitals and TypeScript support
+- **TypeScript ESLint** - TypeScript-specific linting rules
+- **Prettier** - Code formatting enforcement
+- **Simple Import Sort** - Automatic import organization
+- **React** - React-specific linting rules
+- **Import** - ES6+ import/export linting
+
+### Prettier
+Prettier is integrated with ESLint to ensure consistent code formatting across the project.
+
+### Available Commands
+
+```bash
+# Run ESLint to check for issues
+pnpm lint
+
+# Run ESLint and automatically fix issues
+pnpm lint --fix
+
+# Format code with Prettier
+pnpm prettier --write .
+
+# Check if code is formatted correctly
+pnpm prettier --check .
+```
+
+### Key Features
+- **Automatic import sorting** - Imports are automatically organized alphabetically
+- **TypeScript support** - Full TypeScript linting with recommended rules
+- **React best practices** - Enforces React coding standards
+- **Prettier integration** - Consistent code formatting
+- **Custom rules** - Tailored rules for optimal development experience
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

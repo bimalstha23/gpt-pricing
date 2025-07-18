@@ -1,0 +1,13 @@
+# Ignore artifacts:
+build
+dist
+ios
+android
+coverage
+node_modules
+.expo
+generated
+pnpm-lock.yaml
+.tamagui
+.husky
+gql

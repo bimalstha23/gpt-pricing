@@ -25,7 +25,9 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 This project is configured with comprehensive code quality tools:
 
 ### ESLint
+
 ESLint is configured with the following plugins and rules:
+
 - **Next.js** - Core web vitals and TypeScript support
 - **TypeScript ESLint** - TypeScript-specific linting rules
 - **Prettier** - Code formatting enforcement
@@ -34,6 +36,7 @@ ESLint is configured with the following plugins and rules:
 - **Import** - ES6+ import/export linting
 
 ### Prettier
+
 Prettier is integrated with ESLint to ensure consistent code formatting across the project.
 
 ### Available Commands
@@ -53,11 +56,77 @@ pnpm prettier --check .
 ```
 
 ### Key Features
+
 - **Automatic import sorting** - Imports are automatically organized alphabetically
 - **TypeScript support** - Full TypeScript linting with recommended rules
 - **React best practices** - Enforces React coding standards
 - **Prettier integration** - Consistent code formatting
 - **Custom rules** - Tailored rules for optimal development experience
+
+## Git Hooks & Commit Standards
+
+This project uses Git hooks to ensure code quality and consistent commit messages:
+
+### Commitlint
+
+Enforces conventional commit message format for consistent project history.
+
+#### Commit Message Format
+
+```
+<type>: <description>
+
+Examples:
+feat: add user authentication
+fix: resolve navigation bug
+docs: update README with setup instructions
+style: format code with prettier
+refactor: simplify data fetching logic
+test: add unit tests for user service
+chore: update dependencies
+```
+
+#### Available Types
+
+- `feat` - New features
+- `fix` - Bug fixes
+- `docs` - Documentation changes
+- `style` - Code style changes (formatting, etc.)
+- `refactor` - Code refactoring
+- `perf` - Performance improvements
+- `test` - Adding/updating tests
+- `build` - Build system changes
+- `ci` - CI/CD changes
+- `chore` - Other changes (dependencies, etc.)
+- `revert` - Reverting previous commits
+
+### Lint-Staged
+
+Runs linting and formatting only on staged files for faster pre-commit checks.
+
+#### What it does
+
+- **JavaScript/TypeScript files**: Runs ESLint with auto-fix + Prettier formatting
+- **Other files** (JSON, MD, CSS, etc.): Runs Prettier formatting
+- **Staged files only**: Only processes files that are staged for commit
+
+#### Manual Usage
+
+```bash
+# Run lint-staged manually
+npx lint-staged
+
+# Or run automatically on commit
+git add .
+git commit -m "feat: add new feature"  # Runs automatically
+```
+
+### Git Workflow
+
+1. **Stage files**: `git add .`
+2. **Pre-commit hook**: Runs `lint-staged` (ESLint + Prettier on staged files)
+3. **Commit**: `git commit -m "feat: your message"`
+4. **Commit-msg hook**: Validates commit message format with commitlint
 
 ## Learn More
 

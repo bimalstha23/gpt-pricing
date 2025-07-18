@@ -1,0 +1,50 @@
+---
+name: Check errors
+on:
+  # Trigger the workflow on pushes to the main branch
+  push:
+    branches:
+      - main
+  # Trigger the workflow on pull requests
+  pull_request:
+    types: [opened, synchronize]
+    branches:
+      - main
+jobs:
+  check-code-errors:
+    name: Typescript and linting errors
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+          run_install: false
+          standalone: true
+          dest: ~/setup-pnpm
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Generate Prisma Client
+        run: pnpm db:generate
+
+      - name: Build Next.js application
+        run: pnpm build
+
+      - name: Run Prettier check
+        run: pnpm format:check
+
+      - name: Run ESLint
+        run: pnpm lint

@@ -21,7 +21,7 @@
     "db:studio": "prisma studio"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
+    "*.{js,jsx,ts,tsx,mjs}": [
       "eslint --fix",
       "prettier --write"
     ],

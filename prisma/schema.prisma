@@ -12,3 +12,37 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum BillingType {
+  MONTHLY
+  YEARLY
+}
+
+model Plan {
+  id          String   @id @default(cuid())
+  name        String
+  price       Float
+  currency    String      @default("USD")
+  billingType BillingType @default(YEARLY)
+  popular     Boolean     @default(false)
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  features Feature[]
+
+  @@map("plans")
+}
+
+model Feature {
+  id        String   @id @default(cuid())
+  planId    String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  imageUrl  String?
+
+  plan Plan @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@map("features")
+}

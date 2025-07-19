@@ -15,7 +15,7 @@ export async function POST() {
         currency: 'USD',
         billingType: BillingType.YEARLY,
         popular: false,
-        imageUrl: '/images/plus-plan.jpg',
+        imageUrl: '/images/pricing/default.svg',
       },
     });
 
@@ -26,7 +26,7 @@ export async function POST() {
         currency: 'USD',
         billingType: BillingType.YEARLY,
         popular: true,
-        imageUrl: '/images/pro-plan.jpg',
+        imageUrl: '/images/pricing/default.svg',
       },
     });
 
@@ -37,7 +37,7 @@ export async function POST() {
         currency: 'USD',
         billingType: BillingType.YEARLY,
         popular: false,
-        imageUrl: '/images/ultra-plan.jpg',
+        imageUrl: '/images/pricing/default.svg',
       },
     });
 
@@ -46,27 +46,27 @@ export async function POST() {
         {
           planId: plusPlan.id,
           name: 'Generate 1200 songs /year',
-          imageUrl: '/images/music-note.svg',
+          imageUrl: '/images/pricing/plus-credit.svg',
         },
         {
           planId: plusPlan.id,
           name: 'Unlimited downloads',
-          imageUrl: '/images/download.svg',
+          imageUrl: '/images/pricing/download.svg',
         },
         {
           planId: plusPlan.id,
           name: 'Standard tool',
-          imageUrl: '/images/tool.svg',
+          imageUrl: '/images/pricing/core-feature.svg',
         },
         {
           planId: plusPlan.id,
           name: 'Fast generation',
-          imageUrl: '/images/speed.svg',
+          imageUrl: '/images/pricing/fastlane-queue.svg',
         },
         {
           planId: plusPlan.id,
           name: 'Commercial use',
-          imageUrl: '/images/commercial.svg',
+          imageUrl: '/images/pricing/commercial-use.svg',
         },
       ],
     });
@@ -75,28 +75,28 @@ export async function POST() {
       data: [
         {
           planId: proPlan.id,
-          name: 'Generate 2400 songs /year',
-          imageUrl: '/images/music-note.svg',
+          name: 'Generate 6000 songs /year',
+          imageUrl: '/images/pricing/pro-credit.svg',
         },
         {
           planId: proPlan.id,
           name: 'Unlimited downloads',
-          imageUrl: '/images/download.svg',
+          imageUrl: '/images/pricing/download.svg',
         },
         {
           planId: proPlan.id,
-          name: 'Pro tool',
-          imageUrl: '/images/tool-pro.svg',
+          name: 'Unlock all features',
+          imageUrl: '/images/pricing/all-feature.svg',
         },
         {
           planId: proPlan.id,
           name: 'Fast generation',
-          imageUrl: '/images/speed.svg',
+          imageUrl: '/images/pricing/fast-generation.svg',
         },
         {
           planId: proPlan.id,
           name: 'Commercial use',
-          imageUrl: '/images/commercial.svg',
+          imageUrl: '/images/pricing/commercial-use.svg',
         },
       ],
     });
@@ -105,28 +105,28 @@ export async function POST() {
       data: [
         {
           planId: ultraPlan.id,
-          name: 'Generate 4800 songs /year',
-          imageUrl: '/images/music-note.svg',
+          name: 'Unlimited generations',
+          imageUrl: '/images/pricing/ultra-credit.svg',
         },
         {
           planId: ultraPlan.id,
           name: 'Unlimited downloads',
-          imageUrl: '/images/download.svg',
+          imageUrl: '/images/pricing/download.svg',
         },
         {
           planId: ultraPlan.id,
-          name: 'Ultra tool',
-          imageUrl: '/images/tool-ultra.svg',
+          name: 'Unlock all features',
+          imageUrl: '/images/pricing/all-feature.svg',
         },
         {
           planId: ultraPlan.id,
-          name: 'Fastest generation',
-          imageUrl: '/images/speed-ultra.svg',
+          name: 'Fast generation',
+          imageUrl: '/images/pricing/fast-generation.svg',
         },
         {
           planId: ultraPlan.id,
           name: 'Commercial use',
-          imageUrl: '/images/commercial.svg',
+          imageUrl: '/images/pricing/commercial-use.svg',
         },
       ],
     });

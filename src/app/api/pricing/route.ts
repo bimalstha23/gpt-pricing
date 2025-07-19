@@ -19,24 +19,31 @@ export interface PricingData {
 }
 
 const REDIS_KEY = 'pricing:plans';
-const CACHE_EXPIRY = 60 * 60;
+const CACHE_EXPIRY = 2 * 60;
 
 export async function GET() {
   try {
     const cachedData = await redis.get(REDIS_KEY);
     if (cachedData) {
-      console.log('Serving pricing data from cache');
+      console.log(
+        'Serving pricing data from cache at:',
+        new Date().toISOString(),
+      );
       return NextResponse.json(JSON.parse(cachedData));
     }
 
-    console.log('Fetching pricing data from database');
+    console.log(
+      'Cache miss - Fetching pricing data from database at:',
+      new Date().toISOString(),
+    );
     const pricingData = await prisma.plan.findMany({
       include: {
         features: true,
       },
     });
 
-    await redis.setex(REDIS_KEY, CACHE_EXPIRY, JSON.stringify(pricingData));
+    console.log('Setting cache with expiry:', CACHE_EXPIRY, 'seconds');
+    await redis.set(REDIS_KEY, JSON.stringify(pricingData), 'EX', CACHE_EXPIRY);
 
     return NextResponse.json(pricingData);
   } catch (error) {

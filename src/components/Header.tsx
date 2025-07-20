@@ -25,9 +25,9 @@ const Header = () => {
             <Badge variant="outline">Beta</Badge>
           </div>
 
-          <div className="flex items-center gap-4">
-            <div className="flex items-center shadow-md border text-gray-300 text-sm px-4 py-2 gap-4 rounded-md">
-              <div className="text-gray-400 text-sm">
+          <div className="flex items-center md:gap-4">
+            <div className="flex items-center md:shadow-md md:border text-gray-300 text-sm px-4 py-2 gap-4 rounded-md">
+              <div className="text-gray-400 text-sm md:block hidden">
                 <span className="text-gray-500">Get unlimited AI Music</span>
                 <br />
                 <span className="text-gray-400">00 free credits left</span>

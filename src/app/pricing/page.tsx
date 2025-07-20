@@ -14,7 +14,7 @@ const PricingContent = async () => {
 const page = async () => {
   return (
     <main className="flex items-center justify-center min-h-screen">
-      <div className="max-w-4xl min-w-[50rem] p-0 border-none">
+      <div className="max-w-4xl lg:min-w-[50rem] p-0 border-none">
         <Suspense fallback={<PriceCardSkeleton />}>
           <PricingContent />
         </Suspense>

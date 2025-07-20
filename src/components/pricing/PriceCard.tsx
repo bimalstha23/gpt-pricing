@@ -34,9 +34,9 @@ const PriceCard = ({ pricingData }: PriceCardProps) => {
         damping: 30,
         duration: 0.4,
       }}
-      className="overflow-hidden shadow-2xl grid grid-cols-2 h-[38rem]"
+      className="overflow-hidden shadow-2xl grid lg:grid-cols-2 grid-cols-1 size-full h-[80vh] lg:h-[38rem]"
     >
-      <div className="size-full overflow-hidden rounded-l-[26px] relative">
+      <div className="h-[250px] lg:size-full overflow-hidden lg:rounded-l-[26px] rounded-t-2xl relative">
         <AnimatePresence mode="wait">
           {!hoveredFeatureImage ? (
             <motion.div
@@ -65,7 +65,6 @@ const PriceCard = ({ pricingData }: PriceCardProps) => {
                 alt="default"
                 fill
                 className="object-cover"
-                priority
                 fetchPriority="high"
                 loading="lazy"
                 sizes="(max-width: 768px) 100vw, 50vw"
@@ -108,13 +107,13 @@ const PriceCard = ({ pricingData }: PriceCardProps) => {
                 loading="lazy"
               />
 
+              {/* Shimmer effect */}
               <motion.div
                 className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12"
                 initial={{ x: '-100%' }}
                 animate={{ x: '200%' }}
                 transition={{
-                  delay: 0.2,
-                  duration: 0.8,
+                  duration: 1,
                   ease: 'easeOut',
                 }}
               />
@@ -135,10 +134,10 @@ const PriceCard = ({ pricingData }: PriceCardProps) => {
         />
       </div>
 
-      <div className="flex flex-col size-full py-12 px-8 gap-10">
+      <div className="flex flex-col h-fit lg:size-full lg:py-12 lg:px-8 p-4 lg:gap-10 gap-4">
         <h1 className="text-4xl font-bold">Unlock the future of music.</h1>
 
-        <Tabs className="flex gap-10">
+        <Tabs className="flex lg:gap-10 gap-4">
           <TabsList>
             {pricingData.map(plan => (
               <TabsTrigger

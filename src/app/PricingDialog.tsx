@@ -18,7 +18,7 @@ const PricingDialog = ({ pricingData }: PricingDialogProps) => {
     <Dialog defaultOpen modal onOpenChange={() => router.back()}>
       <DialogContent
         showCloseButton={false}
-        className="max-w-4xl min-w-[50rem] max-h-fit p-0 border-none"
+        className="max-w-4xl lg:min-w-[50rem]  lg:max-h-fit p-0 border-none"
       >
         <PriceCard pricingData={pricingData} />
       </DialogContent>

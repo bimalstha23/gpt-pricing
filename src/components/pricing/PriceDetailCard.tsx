@@ -18,7 +18,7 @@ const PriceDetailCard = ({
   setHoveredFeatureImage: (imageUrl: string | null) => void;
 }) => {
   return (
-    <div className="text-white w-full space-y-8">
+    <div className="text-white w-full lg:space-y-8 space-y-4">
       <div className="space-y-2">
         {features.map(feature => (
           <div

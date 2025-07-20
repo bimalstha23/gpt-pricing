@@ -38,6 +38,17 @@ jobs:
       - name: Pull Vercel Environment Information
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
+      - name: Run Database Migrations
+        run: |
+          echo "Running Prisma migrations on production database..."
+          # Use Vercel's environment variables for DATABASE_URL
+          vercel env pull .env.production --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+          # Export environment variables, filtering out comments and empty lines
+          set -a
+          source <(grep -v '^#' .env.production | grep -v '^$')
+          set +a
+          pnpm prisma migrate deploy
+
       - name: Build Project Artifacts
         run: |
           pnpm prisma generate

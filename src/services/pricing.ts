@@ -16,7 +16,7 @@ const getPricing = async () => {
 
     return res.data;
   } catch (error) {
-    console.log('Error fetching pricing data:', error);
+    console.error('Error fetching pricing data:', error);
     return [];
   }
 };

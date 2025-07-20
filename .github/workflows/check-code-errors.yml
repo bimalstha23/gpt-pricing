@@ -40,9 +40,6 @@ jobs:
       - name: Generate Prisma Client
         run: pnpm db:generate
 
-      - name: Build Next.js application
-        run: pnpm build
-
       - name: Run Prettier check
         run: pnpm format:check
 

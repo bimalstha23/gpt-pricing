@@ -1,24 +1,354 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- **Node.js** (v18 or higher)
+- **pnpm** (recommended) or npm/yarn
+- **Docker** and **Docker Compose** (for database services)
+- **Git** (for version control)
+
+### Quick Setup
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone https://github.com/bimalstha23/gpt-pricing.git
+   cd gpt-pricing
+   ```
+
+2. **Install dependencies:**
+
+   ```bash
+   pnpm install
+   ```
+
+3. **Set up environment variables:**
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   Edit `.env` with your configuration:
+
+   ```env
+   # Database
+   DATABASE_URL="postgresql://postgres:password@localhost:5432/gpt_pricing"
+
+   # Redis
+   REDIS_URL="redis://localhost:6379"
+
+   # Optional: Add your own configuration
+   NEXT_PUBLIC_APP_URL="http://localhost:3000"
+   ```
+
+4. **Start the database services:**
+
+   ```bash
+   pnpm docker:dev:postgres
+   pnpm docker:dev:redis
+   ```
+
+5. **Run database migrations:**
+
+   ```bash
+   pnpm db:migrate
+   ```
+
+6. **Seed the database with sample data:**
+
+   ```bash
+   curl -X POST http://localhost:3000/api/pricing/seed
+   ```
+
+7. **Start the development server:**
+
+   ```bash
+   pnpm dev
+   ```
+
+8. **Open your browser:**
+
+   Visit [http://localhost:3000](http://localhost:3000) to see the application.
+
+### Alternative Setup Options
+
+#### Option 1: Full Docker Development
+
+Run everything in containers:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm docker:dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This starts PostgreSQL, Redis, and the Next.js app in Docker containers with hot reload.
+
+#### Option 2: Local Development with External Databases
+
+If you have PostgreSQL and Redis running elsewhere:
+
+```bash
+# Update your .env.local with external database URLs
+pnpm db:migrate
+pnpm dev
+```
+
+### Development Workflow
+
+1. **Make changes** to your code
+2. **View changes** at http://localhost:3000 (auto-refreshes)
+3. **Access database** via Prisma Studio: `pnpm db:studio`
+4. **View API endpoints:**
+   - GET `/api/pricing` - Fetch pricing data
+   - POST `/api/pricing/seed` - Seed database
+   - GET `/api/pricing/status` - redis expiration check
+   - DELETE `/api/pricing/clear-cache` - Clear Redis cache
+
+### Troubleshooting
+
+**Database connection issues:**
+
+```bash
+# Check if PostgreSQL is running
+pnpm docker:dev:postgres
+
+# Verify connection
+pnpm db:studio
+```
+
+**Redis connection issues:**
+
+```bash
+# Check if Redis is running
+pnpm docker:dev:redis
+
+```
+
+**Port conflicts:**
+
+- PostgreSQL: Default port 5432
+- Redis: Default port 6379
+- Next.js: Default port 3000
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Inter](https://fonts.google.com/specimen/Inter), a modern sans-serif font family.
+
+## Project Structure
+
+```
+gpt-pricing/
+├── public/                           # Static assets
+│   ├── images/
+│   │   ├── pricing/                 # Pricing modal images
+│   │   │   ├── default.svg          # Default pricing image
+│   │   │   └── feature-*.svg        # Feature hover images
+│   │   └── MusicGPT.png            # Logo asset
+│   └── *.svg                        # Icon assets
+├── prisma/                          # Database configuration
+│   ├── schema.prisma               # Database schema definition
+│   └── migrations/                 # Database migration files
+├── src/
+│   ├── app/                        # Next.js App Router
+│   │   ├── layout.tsx             # Root layout with modal slot
+│   │   ├── page.tsx               # Main landing page
+│   │   ├── globals.css            # Global styles and CSS variables
+│   │   ├── @modal/                # Parallel route for modals
+│   │   │   ├── default.tsx        # Empty modal state
+│   │   │   └── (.)pricing/        # Intercepted pricing route
+│   │   │       └── page.tsx       # Pricing modal content
+│   │   ├── pricing/               # Direct pricing page
+│   │   │   └── page.tsx           # Standalone pricing page
+│   │   └── api/                   # API routes
+│   │       └── pricing/           # Pricing API endpoints
+│   │           ├── route.ts       # GET pricing data
+│   │           ├── seed/
+│   │           │   └── route.ts   # POST seed database
+│   │           ├── status/
+│   │           │   └── route.ts   # GET health check
+│   │           └── clear-cache/
+│   │               └── route.ts   # DELETE cache
+│   ├── components/                 # React components
+│   │   ├── Header.tsx             # Navigation header
+│   │   ├── pricing/               # Pricing-specific components
+│   │   │   ├── PriceCard.tsx      # Main pricing card with animations
+│   │   │   ├── PriceDetailCard.tsx # Individual plan details
+│   │   │   └── PricingDialog.tsx  # Modal wrapper
+│   │   ├── ui/                    # shadcn/ui components
+│   │   │   ├── button.tsx         # Button component
+│   │   │   ├── badge.tsx          # Badge component
+│   │   │   ├── dialog.tsx         # Dialog/modal primitives
+│   │   │   ├── skeleton.tsx       # Loading skeleton
+│   │   │   ├── tabs.tsx           # Custom tabs with badges
+│   │   │   ├── flip-text.tsx      # Animated text component
+│   │   │   └── pricing-dialog-skeleton.tsx # Pricing modal skeleton
+│   │   ├── effects/               # Animation components
+│   │   │   └── motion-highlight.tsx # Motion highlight effects
+│   │   └── skeletons/             # Loading state components
+│   │       └── pricing-skeleton.tsx # General pricing skeleton
+│   ├── hooks/                     # Custom React hooks
+│   │   └── useClickOutside.tsx    # Click outside detection
+│   ├── lib/                       # Utility libraries
+│   │   ├── prisma.ts             # Prisma client configuration
+│   │   ├── redis.ts              # Redis client setup
+│   │   └── utils.ts              # General utilities
+│   └── services/                  # Business logic
+│       └── pricing.ts            # Pricing service functions
+├── .env.local                     # Environment variables
+├── .gitignore                     # Git ignore rules
+├── .eslintrc.json                # ESLint configuration
+├── .prettierrc                   # Prettier configuration
+├── commitlint.config.js          # Commit message rules
+├── docker-compose.dev.yml        # Docker development setup
+├── Dockerfile.dev                # Docker development image
+├── components.json               # shadcn/ui configuration
+├── next.config.ts               # Next.js configuration
+├── package.json                 # Dependencies and scripts
+├── pnpm-lock.yaml              # Package lock file
+├── postcss.config.mjs          # PostCSS configuration
+├── tailwind.config.ts          # Tailwind CSS configuration
+├── tsconfig.json               # TypeScript configuration
+└── README.md                   # Project documentation
+```
+
+### Key Directories Explained
+
+#### `/src/app/` - App Router Structure
+
+- **Parallel Routes**: `@modal/` directory enables modal overlays
+- **Intercepted Routes**: `(.)pricing/` intercepts navigation for modal display
+- **API Routes**: RESTful endpoints for pricing data and cache management
+
+#### `/src/components/` - Component Architecture
+
+- **Domain Components**: `pricing/` folder contains business logic components
+- **UI System**: `ui/` folder houses reusable design system components
+- **Effects**: `effects/` contains animation and visual effect components
+- **Loading States**: `skeletons/` provides consistent loading experiences
+
+#### `/src/lib/` - Infrastructure
+
+- **Database**: Prisma client with connection pooling
+- **Caching**: Redis configuration with ioredis
+- **Utilities**: Common helper functions and type definitions
+
+#### `/prisma/` - Database Management
+
+- **Schema**: Type-safe database schema definition
+- **Migrations**: Version-controlled database changes
+
+## Project Architecture
+
+### Frontend Components
+
+This project features a sophisticated pricing modal system with advanced UI components:
+
+### Parallel Routes
+
+The application uses Next.js 15 parallel routes for advanced modal handling:
+
+```
+src/app/
+├── layout.tsx                 # Root layout with modal slot
+├── page.tsx                   # Main application page
+├── @modal/                    # Parallel route for modals
+│   ├── default.tsx           # Default modal state (empty)
+│   └── (.)pricing/           # Intercepted route for pricing modal
+│       └── page.tsx          # Pricing modal content
+└── pricing/
+    └── page.tsx              # Direct pricing page (fallback)
+```
+
+#### How Parallel Routes Work
+
+- **Modal Overlay**: When navigating to `/pricing`, the route is intercepted and displays as a modal overlay
+- **Direct Access**: Direct navigation to `/pricing` shows the full page version
+- **Server Components**: Modals use React Suspense with skeleton loading states
+- **URL Persistence**: Modal state is preserved in the URL for sharing and back navigation
+
+### API Endpoints
+
+#### Pricing API (`/api/pricing`)
+
+**GET `/api/pricing`**
+
+- Fetches all pricing plans with Redis caching (2-minute expiry)
+- Returns: Array of pricing plans with features
+- Cache: Redis with automatic invalidation
+
+**POST `/api/pricing/seed`**
+
+- Seeds the database with sample pricing data
+- Creates plans: Personal, Pro, Enterprise
+- Includes features with image URLs for hover effects
+
+**GET `/api/pricing/status`**
+
+- Health check endpoint for pricing service
+- Returns: Database connection status and cached data info
+
+**DELETE `/api/pricing/clear-cache`**
+
+- Clears Redis cache for pricing data
+- Forces fresh data fetch on next request
+
+#### Response Format
+
+```typescript
+interface PricingData {
+  id: string;
+  name: string;
+  price: number;
+  currency: string;
+  billingType: 'MONTHLY' | 'YEARLY';
+  popular: boolean;
+  imageUrl?: string;
+  features: {
+    id: string;
+    name: string;
+    imageUrl?: string;
+  }[];
+}
+```
+
+### Database Schema
+
+```prisma
+model Plan {
+  id          String      @id @default(cuid())
+  name        String
+  price       Decimal
+  currency    String      @default("USD")
+  billingType BillingType @default(MONTHLY)
+  popular     Boolean     @default(false)
+  imageUrl    String?
+  features    Feature[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Feature {
+  id       String  @id @default(cuid())
+  name     String
+  imageUrl String?
+  planId   String
+  plan     Plan    @relation(fields: [planId], references: [id], onDelete: Cascade)
+}
+
+enum BillingType {
+  MONTHLY
+  YEARLY
+}
+```
+
+### Performance Optimizations
+
+- **Redis Caching**: 2-minute cache expiry for pricing data
+- **Lazy Loading**: Images load on viewport intersection
+- **Skeleton Loading**: Matches real component structure
+- **Motion Optimization**: GPU-accelerated animations
+- **Code Splitting**: Dynamic imports for modal components
 
 ## Code Quality & Formatting
 
@@ -235,6 +565,38 @@ pnpm docker:dev:down
    ```bash
    pnpm docker:dev
    ```
+
+## Tech Stack
+
+### Core Technologies
+
+- **Next.js 15** - App Router with parallel routes and intercepted routes
+- **TypeScript** - Full type safety throughout the application
+- **Tailwind CSS** - Utility-first CSS framework with custom design system
+- **Framer Motion** - Advanced animations and gesture handling
+- **Prisma ORM** - Type-safe database operations with PostgreSQL
+- **Redis** - High-performance caching with ioredis
+- **shadcn/ui** - Modern, accessible component library
+
+### Development Tools
+
+- **ESLint** - Code linting with TypeScript and React rules
+- **Prettier** - Code formatting and consistency
+- **Commitlint** - Conventional commit message enforcement
+- **Lint-staged** - Pre-commit hooks for code quality
+- **Docker** - Containerized development environment
+- **Prisma Studio** - Database management interface
+
+### Key Features
+
+- **Server Components** - Optimized performance with React Server Components
+- **Parallel Routes** - Advanced modal management with URL persistence
+- **Intercepted Routes** - Seamless modal navigation
+- **Suspense Boundaries** - Smooth loading states with skeletons
+- **Motion Animations** - 3D transforms and spring physics
+- **Lazy Loading** - Performance-optimized image loading
+- **Redis Caching** - Sub-second API response times
+- **Type Safety** - End-to-end TypeScript integration
 
 ## Learn More
 

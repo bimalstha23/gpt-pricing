@@ -1,5 +1,6 @@
 'use client';
 import { AnimatePresence, motion } from 'motion/react';
+import Image from 'next/image';
 import React, { useState } from 'react';
 
 import { PricingData } from '@/app/api/pricing/route';
@@ -21,7 +22,7 @@ const PriceCard = ({ pricingData }: PriceCardProps) => {
   const [hoveredFeatureImage, setHoveredFeatureImage] = useState<string | null>(
     null,
   );
-  //FIXME: Ensure Images are optimized and loaded efficiently
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -38,99 +39,75 @@ const PriceCard = ({ pricingData }: PriceCardProps) => {
       <div className="size-full overflow-hidden rounded-l-[26px] relative">
         <AnimatePresence mode="wait">
           {!hoveredFeatureImage ? (
-            <motion.img
+            <motion.div
               key="default"
-              src="/images/pricing/default.svg"
-              alt="default"
-              loading="lazy"
-              fetchPriority="high"
-              className="object-cover size-full"
+              className="relative size-full"
               initial={{
                 opacity: 0,
-                scale: 1.2,
-                rotateY: -30,
-                filter: 'blur(8px)',
+                scale: 1.05,
               }}
               animate={{
                 opacity: 1,
                 scale: 1,
-                rotateY: 0,
-                filter: 'blur(0px)',
               }}
               exit={{
                 opacity: 0,
-                scale: 0.8,
-                rotateY: 30,
-                filter: 'blur(8px)',
-                transition: { duration: 0.3 },
+                scale: 0.95,
+                transition: { duration: 0.2 },
               }}
               transition={{
-                type: 'spring',
-                stiffness: 400,
-                damping: 25,
-                duration: 0.7,
+                duration: 0.3,
+                ease: 'easeOut',
               }}
-            />
+            >
+              <Image
+                src="/images/pricing/default.svg"
+                alt="default"
+                fill
+                className="object-cover"
+                priority
+                fetchPriority="high"
+                loading="lazy"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                quality={90}
+              />
+            </motion.div>
           ) : (
             <motion.div
               key={hoveredFeatureImage}
               className="relative size-full"
               initial={{
                 opacity: 0,
-                scale: 0.7,
-                x: -100,
-                rotateX: -15,
-                rotateY: -25,
-                filter: 'blur(10px) brightness(0.6)',
+                scale: 0.95,
+                x: -20,
               }}
               animate={{
                 opacity: 1,
                 scale: 1,
                 x: 0,
-                rotateX: 0,
-                rotateY: 0,
-                filter: 'blur(0px) brightness(1)',
               }}
               exit={{
                 opacity: 0,
-                scale: 1.3,
-                x: 100,
-                rotateX: 15,
-                rotateY: 25,
-                filter: 'blur(10px) brightness(0.6)',
-                transition: { duration: 0.25, ease: 'easeIn' },
+                scale: 1.05,
+                x: 20,
+                transition: { duration: 0.15 },
               }}
               transition={{
-                type: 'spring',
-                stiffness: 500,
-                damping: 30,
-                duration: 0.6,
+                duration: 0.25,
+                ease: 'easeOut',
               }}
             >
-              <motion.img
+              <Image
                 src={hoveredFeatureImage}
                 alt="feature preview"
-                loading="lazy"
-                className="object-cover size-full relative z-10"
+                fill
+                className="object-cover relative z-10"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                quality={90}
                 fetchPriority="high"
-                initial={{
-                  opacity: 0,
-                  scale: 1.1,
-                  filter: 'contrast(0.8) saturate(0.8)',
-                }}
-                animate={{
-                  opacity: 1,
-                  scale: 1,
-                  filter: 'contrast(1) saturate(1.1)',
-                }}
-                transition={{
-                  delay: 0.1,
-                  duration: 0.4,
-                  ease: 'easeOut',
-                }}
+                loading="lazy"
               />
 
-              {/* Shimmer effect */}
               <motion.div
                 className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12"
                 initial={{ x: '-100%' }}
